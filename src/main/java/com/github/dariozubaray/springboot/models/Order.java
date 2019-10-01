@@ -1,11 +1,16 @@
 package com.github.dariozubaray.springboot.models;
 
+import java.util.Date;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.NotBlank;
 
 public class Order {
+
+    private Long id;
+
+    private Date placedAt;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -46,6 +51,21 @@ public class Order {
         this.ccCVV = ccCVV;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getPlacedAt() {
+        return placedAt;
+    }
+
+    public void setPlacedAt(Date placedAt) {
+        this.placedAt = placedAt;
+    }
     public String getName() {
         return name;
     }

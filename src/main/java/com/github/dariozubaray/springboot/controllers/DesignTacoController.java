@@ -1,11 +1,13 @@
 package com.github.dariozubaray.springboot.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,16 +17,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.dariozubaray.springboot.models.Ingredient;
 import com.github.dariozubaray.springboot.models.Ingredient.Type;
 import com.github.dariozubaray.springboot.models.Taco;
+import com.github.dariozubaray.springboot.repository.IngredientRepository;
 
 @Controller
 @RequestMapping("/design")
 public class DesignTacoController {
     private static final Logger log = LoggerFactory.getLogger(DesignTacoController.class);
+    private final IngredientRepository ingredientRepo;
+
+    @Autowired
+    public DesignTacoController(IngredientRepository ingredientRepo) {
+        this.ingredientRepo = ingredientRepo;
+    }
 
     @GetMapping
     public String showDesignForm(Model model) {
         log.debug("showDesignForm");
-        List<Ingredient> ingredients = getIngredients();
+        //List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredientRepo.findAll().forEach(i -> ingredients.add(i));
 
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {

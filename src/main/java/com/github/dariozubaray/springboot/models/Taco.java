@@ -6,90 +6,102 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Taco {
+
     private Long id;
-
     private Date createdAt;
-
     @NotNull
-    @Size(min=5, message="Name must be at least 5 characters long")
+    @Size(min = 5, message = "Name must be at least 5 characters long")
     private String name;
-
-    @Size(min=1, message="You must choose at least 1 ingredient")
+    @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 
-    public Taco() { }
-
-    public Taco(String name, List<Ingredient> ingredients) {
-        super();
-        this.name = name;
-        this.ingredients = ingredients;
-    }
+    public Taco() {}
 
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return this.id;
     }
 
     public Date getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return this.name;
     }
 
     public List<Ingredient> getIngredients() {
-        return ingredients;
+        return this.ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setCreatedAt(final Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setIngredients(final List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((ingredients == null) ? 0 : ingredients.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object o) {
+        if (o == this)
             return true;
-        if (obj == null)
+        if (!(o instanceof Taco))
             return false;
-        if (getClass() != obj.getClass())
+        final Taco other = (Taco) o;
+        if (!other.canEqual((Object) this))
             return false;
-        Taco other = (Taco) obj;
-        if (ingredients == null) {
-            if (other.ingredients != null)
-                return false;
-        } else if (!ingredients.equals(other.ingredients))
+        final Object thisId = this.getId();
+        final Object otherId = other.getId();
+        if (thisId == null ? otherId != null : !thisId.equals(otherId))
             return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
+        final Object thisCreatedAt = this.getCreatedAt();
+        final Object otherCreatedAt = other.getCreatedAt();
+        if (thisCreatedAt == null ? otherCreatedAt != null
+                : !thisCreatedAt.equals(otherCreatedAt))
+            return false;
+        final Object thisName = this.getName();
+        final Object otherName = other.getName();
+        if (thisName == null ? otherName != null : !thisName.equals(otherName))
+            return false;
+        final Object thisIngredients = this.getIngredients();
+        final Object otherIngredients = other.getIngredients();
+        if (thisIngredients == null ? otherIngredients != null
+                : !thisIngredients.equals(otherIngredients))
             return false;
         return true;
     }
 
+    protected boolean canEqual(final Object other) {
+        return other instanceof Taco;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        final Object thisId = this.getId();
+        result = result * PRIME + (thisId == null ? 43 : thisId.hashCode());
+        final Object thisCreatedAt = this.getCreatedAt();
+        result = result * PRIME + (thisCreatedAt == null ? 43 : thisCreatedAt.hashCode());
+        final Object thisName = this.getName();
+        result = result * PRIME + (thisName == null ? 43 : thisName.hashCode());
+        final Object thisIngredients = this.getIngredients();
+        result = result * PRIME + (thisIngredients == null ? 43 : thisIngredients.hashCode());
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "Taco [name=" + name + ", ingredients=" + ingredients + "]";
+        return "Taco(id=" + this.getId() + ", createdAt=" + this.getCreatedAt() + ", name="
+                + this.getName() + ", ingredients=" + this.getIngredients() + ")";
     }
 
 }

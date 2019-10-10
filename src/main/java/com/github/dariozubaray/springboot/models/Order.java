@@ -3,13 +3,24 @@ package com.github.dariozubaray.springboot.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.NotBlank;
 
+@Entity
+@Table(name="Taco_Order")
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private Date placedAt;
@@ -38,25 +49,16 @@ public class Order {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
+    @ManyToMany(targetEntity=Taco.class)
     private List<Taco> tacos = new ArrayList<>();
 
     public void addDesign(Taco design) {
       this.tacos.add(design);
     }
 
-    public Order() {}
-
-    public Order(String name, String street, String city, String state, String zip, String ccNumber,
-            String ccExpiration, String ccCVV) {
-        super();
-        this.name = name;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.ccNumber = ccNumber;
-        this.ccExpiration = ccExpiration;
-        this.ccCVV = ccCVV;
+    @PrePersist
+    public void placedAt() {
+        this.placedAt = new Date();
     }
 
     public Long getId() {

@@ -1,4 +1,4 @@
-package com.github.dariozubaray.springboot.controllers;
+package tacos.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import com.github.dariozubaray.springboot.models.Ingredient;
-import com.github.dariozubaray.springboot.models.Ingredient.Type;
-import com.github.dariozubaray.springboot.models.Order;
-import com.github.dariozubaray.springboot.models.Taco;
-import com.github.dariozubaray.springboot.repository.IngredientRepository;
-import com.github.dariozubaray.springboot.repository.TacoRepository;
-
+import tacos.Taco;
+import tacos.Ingredient;
+import tacos.Ingredient.Type;
+import tacos.Order;
+import tacos.data.TacoRepository;
+import tacos.data.IngredientRepository;
 
 @Controller
 @RequestMapping("/design")
@@ -73,9 +72,7 @@ public class DesignTacoController {
     }
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-        return ingredients.stream()
-                          .filter(x -> x.getType().equals(type))
-                          .collect(Collectors.toList());
+        return ingredients.stream().filter(x -> x.getType().equals(type)).collect(Collectors.toList());
     }
 
 }

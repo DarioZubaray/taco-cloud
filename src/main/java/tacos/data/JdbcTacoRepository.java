@@ -1,4 +1,4 @@
-package com.github.dariozubaray.springboot.repository;
+package tacos.data;
 
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import com.github.dariozubaray.springboot.models.Ingredient;
-import com.github.dariozubaray.springboot.models.Taco;
+import tacos.Ingredient;
+import tacos.Taco;
 
 @Repository
 public class JdbcTacoRepository implements TacoRepository {
@@ -30,6 +30,7 @@ public class JdbcTacoRepository implements TacoRepository {
         for (Ingredient ingredient : taco.getIngredients()) {
             saveIngredientToTaco(ingredient, tacoId);
         }
+
         return taco;
     }
 
@@ -39,19 +40,22 @@ public class JdbcTacoRepository implements TacoRepository {
         String sql = "insert into Taco (name, createdAt) values (?, ?)";
         PreparedStatementCreatorFactory pscf;
         pscf = new PreparedStatementCreatorFactory(sql, Types.VARCHAR, Types.TIMESTAMP);
-        Long tacoTime = taco.getCreatedAt().getTime();
-        List<Object> tacoParams = Arrays.asList(taco.getName(), new Timestamp(tacoTime));
-        PreparedStatementCreator psc = pscf .newPreparedStatementCreator(tacoParams);
+
+        Timestamp createAt = new Timestamp(taco.getCreatedAt().getTime());
+
+        List<Object> params = Arrays.asList(taco.getName(), createAt);
+
+        PreparedStatementCreator psc = pscf.newPreparedStatementCreator(params);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(psc, keyHolder);
+
         return keyHolder.getKey().longValue();
     }
 
     private void saveIngredientToTaco(Ingredient ingredient, long tacoId) {
-        jdbc.update("insert into Taco_Ingredients (taco, ingredient) "
-                    + "values (?, ?)",
-                    tacoId,
-                    ingredient.getId());
+        String sql = "insert into Taco_Ingredients (taco, ingredient) values (?, ?)";
+        jdbc.update(sql, tacoId, ingredient.getId());
     }
+
 }
